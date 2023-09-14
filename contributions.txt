@@ -1,0 +1,9 @@
+Team summary
+
+Elton Toh	(ET1746)
+Was responsible for search functionality and customer use cases
+Flight booking, customer homepage, spending tracking
+
+Ruiqi Xue	(RX525)
+
+Avinesha Kumar	(AK9577)

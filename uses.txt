@@ -1,0 +1,322 @@
+Use cases and their queries
+
+
+Homepage/landing page -------------------------------------------
+
+- Table displaying all flights
+	- 'SELECT * FROM flight'
+	Retrieves all flights
+
+- Search by source city or airport
+If searching through a user's flights,
+	-'SELECT * FROM flight WHERE departure_airport_code IN 
+                (SELECT airport_code FROM airport WHERE 
+                airport_name = %s OR city = %s OR country = %s OR 
+                airport_code = %s) AND flight_number IN 
+                (SELECT flight_number FROM ticket WHERE customer_email = %s)'
+	Retrieves all flights that match either the given airport code,
+	name, city, or country during departure
+	Additionally filters them by the logged in customer
+
+Otherwise,
+	-'SELECT * FROM flight WHERE departure_airport_code IN 
+                (SELECT airport_code FROM airport WHERE
+                airport_name = %s OR city = %s OR country = %s OR
+                airport_code = %s)'
+	Retrieves all flights that match either the given airport code,
+	name, city, or country during departure
+
+- Search by destination city or airport
+If searching through a user's flights,
+	-'SELECT * FROM flight WHERE arrival_airport_code IN 
+                (SELECT airport_code FROM airport WHERE 
+                airport_name = %s OR city = %s OR country = %s OR 
+                airport_code = %s) AND flight_number IN 
+                (SELECT flight_number FROM ticket WHERE customer_email = %s)'
+	Retrieves all flights that match either the given airport code,
+	name, city, or country during arrival
+	Additionally filters them by the logged in customer
+
+Otherwise,
+	-'SELECT * FROM flight WHERE arrival_airport_code IN 
+                (SELECT airport_code FROM airport WHERE 
+                airport_name = %s OR city = %s OR country = %s OR 
+                airport_code = %s)'
+	Retrieves all flights that match either the given airport code,
+	name, city, or country during arrival
+
+- Search by departure date
+If searching through a user's flights,
+	-'SELECT * FROM flight WHERE departure_date_time = %s
+                AND flight_number IN 
+                (SELECT flight_number FROM ticket WHERE customer_email = %s)'
+	Retrieves all flights that match the given date during departure
+	Additionally filters them by the logged in customer
+
+Otherwise,
+	-'SELECT * FROM flight WHERE departure_date_time = %s'
+	Retrieves all flights that match the given date during departure
+
+- Search by return date
+If searching through a user's flights,
+	-'SELECT * FROM flight WHERE arrival_date_time = %s
+                AND flight_number IN 
+                (SELECT flight_number FROM ticket WHERE customer_email = %s)'
+	Retrieves all flights that match the given date during arrival
+	Additionally filters them by the logged in customer
+
+Otherwise,
+	-'SELECT * FROM flight WHERE arrival_date_time = %s'
+	Retrieves all flights that match the given date during arrival
+
+Customer login page -------------------------------------------
+
+login form
+	-'SELECT * FROM customer WHERE email = %s and md5(c_password) = %s'
+	Searches for a customer in the database with matching credentials
+
+Customer homepage -----------------------------------------------
+
+The following three tables have near identical searching functionality as described
+in the landing page. For brevity, the search functions will not be
+described again.
+
+- Table displaying all flights
+	- 'SELECT * FROM flight'
+	Retrieves all flights
+
+For the next two tables, their search functionality uses the alternate
+search, where it filters by the logged in customer
+
+- Table displaying customer's future flights
+	-'SELECT * FROM flight WHERE flight_number IN 
+                (SELECT flight_number FROM ticket WHERE customer_email = %s) 
+                AND departure_date_time > DATE %s'
+	Retrieves all flights where the customer has a ticket for them,
+	and the flight will depart some time in the future
+
+- Table displaying all of customer's flights
+	-'SELECT * FROM flight WHERE flight_number IN 
+            (SELECT flight_number FROM ticket WHERE customer_email = %s)'
+	Retrieves all flights where the customer has a ticket for them,
+	regardless of status
+
+- Table displaying customer spending
+	-'SELECT * FROM ticket WHERE customer_email = %s'
+	Retrieves the customer's tickets
+
+- Flight cancellation
+	-'SELECT departure_date_time FROM flight WHERE flight_number IN
+            (SELECT flight_number FROM ticket WHERE ticket_id = %s)'
+	Retrieves the departure date of the ticket being cancelled
+	This is to ensure tickets do not get cancelled 24H before
+	departure
+	
+	-'SELECT customer_email FROM ticket WHERE ticket_id = %s'
+	Retrieves email associated with the ticket, to ensure
+	the logged in customer is the owner
+
+	-'DELETE FROM ticket WHERE ticket_id = %s'
+	Deletes the ticket
+
+Flight listings ----------------------------------------------
+
+- Table showing all future flights that can be booked
+	-'SELECT * FROM flight WHERE departure_date_time > DATE %s'
+	Retrieves all flights that depart some time in the future
+
+Ticket buying form -------------------------------------------
+
+- Buying tickets
+	-'SELECT departure_date_time FROM flight WHERE flight_number = %s'
+	Gets the departure date of the flight
+
+	-'SELECT airline_name FROM flight WHERE flight_number = %s'
+	Gets the name of the airline operating the flight
+
+	-'SELECT ticket_id FROM ticket WHERE ticket_id = %s'
+	Checks if the new ticket's ID is already taken
+
+	-'INSERT INTO ticket VALUES(%s, %s, %s, %s, %s, %s,
+            %s, %s, %s, %s, %s)'
+	Creates the ticket using the ticket ID, username,
+	travel class, airline name, flight number,
+	departure date, price, purchase timestamp,
+	card type, name on card, and card expiration
+
+
+Ratings ------------------------------------------------------
+
+- Comment list
+	-'SELECT * FROM ratings WHERE flight_number = %s'
+	Retrieves all ratings for the associated flight
+
+- Post rating
+	-'SELECT * FROM ratings WHERE customer_email = %s'
+	Attempts to find pre-existing rating from the customer
+
+	-'INSERT INTO ratings VALUES (%s, %s, %s, %s)'
+	Commits the rating into the database, using the
+	flight number, username, rating, and comment
+
+- Delete rating
+	-'SELECT * FROM ratings WHERE customer_email = %s'
+	Attempts to find the customer's rating
+
+	-'DELETE FROM ratings WHERE customer_email = %s'
+	Deletes their rating
+	
+Airline Staff's use cases
+	
+1. View flights
+	-'SELECT * FROM flight'
+	Retrieves all flights
+	
+	
+2. Create new flights
+	- 'SELECT * FROM flight WHERE flight_number = %s'
+	First check if the flight is already existed in the flight table
+	
+	- 'INSERT INTO flight VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)'
+        cursor.execute(query2, (flight_no, flight_status, dept_datetime, airline,
+                               airplane, dept_code, arriv_code, arri_datetime, base_price))
+	If not existed, then insert the flight info into the flight table
+	
+3. Change status of flight
+	- 'SELECT * FROM flight WHERE flight_number = %s'
+	First check if the flight is already existed in the flight table
+	
+	If not, error, need to add this flight first
+	
+	If yes, - 'UPDATE flight SET flight_status  = %s WHERE flight_number = %s'
+	Update the status column in the flight table
+	
+4. Add airplane
+	- 'SELECT airline_name FROM airline'
+	First get the airline name
+	
+	- 'SELECT * FROM airplane WHERE airplane_id = %s'
+	Check if the airplane is already existed in the airplane table
+	
+	If not, - 'INSERT INTO airplane VALUES (%s, %s, %s, %s, %s)'
+	Insert the new plane info to airplane table
+	
+	- 'SELECT * FROM airplane WHERE airline_name = %s'
+	When filling out the form, get restricted to existed airline, otherwise need to add that airline first
+	
+5. Add new airport
+	- 'SELECT * FROM airport WHERE airport_code = %s'
+	First check if the airport is already existed in the airport table
+	
+	If not, 'INSERT INTO airport VALUES (%s, %s, %s, %s, %s)'
+	cursor.execute(query2, (airport_code, airport_name, country, city, type))
+	Insert all the new airport's info into airport table
+	
+6. View flight ratings
+	- 'SELECT airline_name FROM airline_staff WHERE username=%s'
+	First get the airline name that the staff works for 
+	
+	- 'SELECT ratings.flight_number, AVG(rating) as average_rating FROM ratings, flight WHERE \
+    flight.flight_number=ratings.flight_number\
+     AND flight.airline_name=%s GROUP BY flight_number'
+    	cursor.execute(query, airline)
+	Calcuate average ratings of flights operated by that airline
+	
+	-'SELECT flight_number, rating, comments, customer_email as customer FROM ratings WHERE flight_number=%s'
+    cursor.execute(query, flight_num)
+    	Get all the comments and ratings of a certain flight number searched by the user
+	
+7. View frequent customers
+	- 'SELECT airline_name FROM airline_staff WHERE username=%s'
+    cursor.execute(query0, username)
+    	First get the airline name that the staff works for 
+	
+	- 'SELECT DISTINCT customer_email FROM ticket WHERE airline_name=%s \
+    AND date(purchase_date_time) > subdate(CURRENT_DATE, INTERVAL 1 YEAR) group by customer_email \
+    ORDER BY COUNT(customer_email) DESC LIMIT 1'
+    cursor.execute(query1, airline)
+    	Get the most frequent customer's email from number of tickets purchased from ticket table
+	
+	- 'SELECT flight_number FROM ticket WHERE customer_email=%s AND airline_name=%s AND date(departure_date_time) < CURRENT_DATE'
+    cursor.execute(query1, (customer, airline))
+    	Get a list of flight numbers that a certain customer has taken within that airline by searching the customer's email
+	
+8. View report
+	- 'SELECT airline_name FROM airline_staff WHERE username=%s'
+	First get the airline name that the staff works for 
+	
+	Based on user's choice of time to check the report,
+	- If Last month:    
+        	- 'SELECT COUNT(*) as num_tickets_sold FROM ticket WHERE airline_name=%s AND date(purchase_date_time) >\
+         subdate(CURRENT_DATE, INTERVAL 1 MONTH)'
+        cursor.execute(query1, airline)
+		Get the number of tickets sold within one month
+		
+		- 'SELECT distinct MONTH(purchase_date_time) AS month FROM ticket WHERE airline_name=%s AND date(purchase_date_time) >\
+         subdate(CURRENT_DATE, INTERVAL 1 MONTH)'
+        cursor.execute(query4, airline)
+		Get month numbers for the month-wise report table 
+		
+		- 'SELECT COUNT(*) AS num FROM ticket WHERE airline_name=%s AND MONTH(purchase_date_time) = %s'
+            cursor.execute(query5, (airline, i))
+	     	Get number of tickets sold for each month in month-wise report table
+	
+	- If Last Year:
+		- 'SELECT COUNT(*) as num_tickets_sold FROM ticket WHERE airline_name=%s AND date(purchase_date_time) > subdate(CURRENT_DATE, INTERVAL 1 YEAR)'
+        cursor.execute(query2, airline)
+		
+		- 'SELECT distinct MONTH(purchase_date_time) AS month FROM ticket WHERE airline_name=%s AND date(purchase_date_time) > subdate(CURRENT_DATE, INTERVAL 1 YEAR)'
+        cursor.execute(query4, airline)
+		
+		- 'SELECT COUNT(*) AS num FROM ticket WHERE airline_name=%s AND MONTH(purchase_date_time) = %s'
+            cursor.execute(query5, (airline, i))
+	    
+	- If selected time of prriod by the user:
+		- 'SELECT COUNT(*) as num_tickets_sold FROM ticket WHERE airline_name= %s AND date(purchase_date_time) BETWEEN %s AND %s'
+        cursor.execute(query3, (airline, date1, date2))
+	
+		- 'SELECT distinct MONTH(purchase_date_time) AS month FROM ticket WHERE airline_name=%s AND date(purchase_date_time) BETWEEN %s AND %s '
+       	cursor.execute(query4, (airline, date1, date2))
+	
+		- 'SELECT COUNT(*) AS num FROM ticket WHERE airline_name=%s AND MONTH(purchase_date_time) = %s'
+            cursor.execute(query5, (airline, i))
+	   
+9. View Earned Revenue
+	- 'SELECT airline_name FROM airline_staff WHERE username=%s'
+	First get the airline name that the staff works for 
+	
+	- 'SELECT SUM(sold_price) as total_revenue_m FROM ticket WHERE airline_name=%s AND date(purchase_date_time) \
+    > subdate(CURRENT_DATE, INTERVAL 1 MONTH)'
+    	- 'SELECT SUM(sold_price) as total_revenue_y FROM ticket WHERE airline_name=%s AND date(purchase_date_time) \
+    > subdate(CURRENT_DATE, INTERVAL 1 YEAR)'
+	Get total amount of revenue earned from ticket sales in the last month and last year
+	
+10. View the revenue earned by each travel class
+	- "SELECT (CASE WHEN SUM(sold_price) is not null THEN SUM(sold_price) ELSE 0 END) as total_revenue_m\
+     FROM ticket WHERE airline_name=%s AND date(purchase_date_time) > subdate(CURRENT_DATE, INTERVAL 1 MONTH) AND travel_class = 'First Class'"
+    	- "SELECT (CASE WHEN SUM(sold_price) is not null THEN SUM(sold_price) ELSE 0 END) as total_revenue_m\
+     FROM ticket WHERE airline_name=%s AND date(purchase_date_time) > subdate(CURRENT_DATE, INTERVAL 1 MONTH) AND travel_class = 'Business Class'"
+   	- "SELECT (CASE WHEN SUM(sold_price) is not null THEN SUM(sold_price) ELSE 0 END) as total_revenue_m\
+    ticket WHERE airline_name=%s AND date(purchase_date_time) > subdate(CURRENT_DATE, INTERVAL 1 MONTH) AND travel_class = 'Economy Class'"
+    	- "SELECT (CASE WHEN SUM(sold_price) is not null THEN SUM(sold_price) ELSE 0 END) as total_revenue_y\
+     FROM ticket WHERE airline_name=%s AND date(purchase_date_time) > subdate(CURRENT_DATE, INTERVAL 1 YEAR) AND travel_class= 'First Class'"
+    	- "SELECT (CASE WHEN SUM(sold_price) is not null THEN SUM(sold_price) ELSE 0 END) as total_revenue_y\
+     FROM ticket WHERE airline_name=%s AND date(purchase_date_time) > subdate(CURRENT_DATE, INTERVAL 1 YEAR) AND travel_class= 'Business Class'"
+    	- "SELECT (CASE WHEN SUM(sold_price) is not null THEN SUM(sold_price) ELSE 0 END) as total_revenue_y\
+     FROM ticket WHERE airline_name=%s AND date(purchase_date_time) > subdate(CURRENT_DATE, INTERVAL 1 YEAR) AND travel_class= 'Economy Class'"
+     		Get the revenue earned by each travel class
+		
+11. View top destinations
+	- 'SELECT airline_name FROM airline_staff WHERE username=%s'
+	First get the airline name that the staff works for 
+	
+	- 'SELECT airport.city AS city, arrival_airport_code AS des_code,  COUNT(ticket_id) AS num_ticket FROM ticket, \
+        flight, airport WHERE ticket.airline_name=%s AND ticket.flight_number=flight.flight_number AND flight.arrival_airport_code=airport.airport_code \
+        AND date(purchase_date_time) > subdate(CURRENT_DATE, INTERVAL 3 MONTH) GROUP BY arrival_airport_code \
+        ORDER BY num_ticket DESC LIMIT 3'
+	Get the top 3 most visited destination (airport) with its city and number of tickets sold for the last 3 months
+	
+	- 'SELECT airport.city AS city, arrival_airport_code AS des_code,  COUNT(ticket_id) AS num_ticket FROM ticket, flight, \
+        airport WHERE ticket.airline_name=%s AND ticket.flight_number=flight.flight_number AND flight.arrival_airport_code=airport.airport_code AND \
+        date(purchase_date_time) > subdate(CURRENT_DATE, INTERVAL 1 YEAR) GROUP BY arrival_airport_code ORDER BY num_ticket DESC LIMIT 3'
+        Get the top 3 most visited destination (airport) with its city and number of tickets sold for the last year

@@ -1,0 +1,27 @@
+root
+-init1.py			-nearly all of the code to run the webapp in here
+-search.py			-search utilities
+
+templates
+-add_new_airport.html		-new airport form
+-add_plane.html			-new plane form
+-add_plane_confirmation.html	-new plane confirmation form
+-book_ticket_form.html		-ticket booking form
+-change_status.html		-page to change the status of a flight
+-chome.html			-customer homepage
+-create_flight.html		-form for entering/creating a new flight
+-customerlogin.html		-customer login page
+-customerregister.html		-customer registration page/form
+-flight_listing.html		-page that lists future flights to book
+-landing_page.html		-default homepage
+-psearch.html			-search results when searching through flights
+-ratings.html			-page for customers to rate and comment their past flights
+-shome.html			-staff homepage
+-stafflogin.html		-staff login page
+-staffregister.html		-staff registration page
+-view_report.html		-
+-view_report_result.html	-
+-view_revenue.html		-revenue page?
+-view_revenue_class.html	-
+-view_top_des.html		-
+-view_top_des_result.html	-
