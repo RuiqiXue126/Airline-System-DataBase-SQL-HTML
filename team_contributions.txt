@@ -1,0 +1,15 @@
+Team summary
+
+- Elton Toh	(ET1746)
+
+Did search functionality and half of airline staff's use cases at first,
+
+When Avinesha didn't hand-in the work he was assigned, he takes over all the customer use cases, for which didn't have time to do spend tracking in the end and finish the 4 search boxes for oneway/round trip flights, and customer's homepage.
+
+AND The first two use cases of air staff uses cases (View flights and create new flights, but didn't have time for the default page for flight displaying and search functions
+
+- Ruiqi Xue	(RX525)
+Was responsible for customer and staff's login and register and half of airline staff's use cases at first,
+
+When Avinesha didn't hand-in the work he was assigned, she takes over the airline staff's use cases from number 3 to 12 and staff's homepage. 
+
