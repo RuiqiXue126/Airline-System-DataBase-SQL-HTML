@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ratings</title>
+    <style>
+        table, th, td {
+		    border: 1px solid black;
+	    }
+	    h1 {
+	        border-bottom: 2px solid black;
+	    }
+    </style>
+
+</head>
+<body>
+
+{% if data %}
+    <h1>
+        Comments for flight {{ flight_number }}
+    </h1>
+    <table>
+        <th>Customer Email</th>
+        <th>Rating</th>
+        <th>Comments</th>
+
+        {% for entry in data %}
+            <tr>
+                {% for atom in entry %}
+                    <td>{{atom}}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+
+
+    </table>
+{% else %}
+    <div>
+        <h1>No ratings for flight {{ flight_number }}</h1>
+    </div>
+{% endif %}
+
+<br>
+
+<form action="/post_rating" method="post">
+    Flight Number: <input type="text" name="flight_number" value="{{ flight_number }}" readonly><br>
+    Comment: <input type="text" name="comment" placeholder="Write a comment..." required><br>
+    Rating: <input type="number" name="score" step="0.1" min="0.0" max="5.0" required><br>
+    <br>
+    <input type="submit" value="Submit"><br>
+</form>
+
+{% if post_err %}
+    <p><strong>{{ post_err }}</strong></p>
+{% else %}
+{% endif %}
+
+<br>
+<form action="/delete_rating" method="post">
+    <input type="hidden" name="flight_number" value="{{ flight_number }}">
+    <input type="submit" value="Delete"><br>
+</form>
+
+{% if delete_message %}
+<p><strong>{{ delete_message }}</strong></p>
+{% else %}
+{% endif %}
+
+<br>
+
+<a href="{{ url_for('chome') }}">Back to homepage</a>
+
+</body>
+</html>

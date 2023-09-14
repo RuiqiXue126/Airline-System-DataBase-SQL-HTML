@@ -1,0 +1,37 @@
+<html>
+<head>
+</head>
+<body>
+<h1>Customer Register</h1>
+<form action="/cregisterAuth" method="POST">
+	Email: <input type="email" name = "email" placeholder="email" required/> <br>
+	<br>
+	First Name: <input type="text" name = "fname" placeholder="first name" required/> <br>
+	Last Name: <input type="text" name = "lname" placeholder="last name" required/> <br>
+	<br>
+	Password: <input type="password" name = "password" placeholder="password" required/><br>
+	<br>
+	State: <input type="text" name = "state" placeholder="state" required/> <br>
+	City: <input type="text" name = "city" placeholder="city" required/> <br>
+	Street Name: <input type="text" name = "street" placeholder="street" required/> <br>
+	Building Number: <input type="text" name = "building" placeholder="building number" required/> <br>
+	<br>
+	Phone Number: <input type="text" name = "phone" placeholder="phone number" required/> <br>
+	<br>
+	Passport Number: <input type="text" name = "passnum" placeholder="passport number" required/> <br>
+	Passport Expiration Date: <input type="date" name = "passexpi" placeholder="passport expiration date" required/> <br>
+	Passport Issuing Country: <input type="text" name = "passcountry" placeholder="passport issuing country" required/> <br>
+	Date of Birth: <input type="date" name = "dob" placeholder="date of birth" required/> <br>
+	<br>
+	<input type="submit" value = Register />
+	{% if error %}
+		<p class="error"><strong>Error:</strong> {{error}}</p>
+	{% endif %}
+</form>
+
+<a href="{{ url_for('loginRedirect', acc_type='customer') }}">Login</a><br>
+<a href="{{ url_for('registerRedirect', acc_type='staff') }}">Staff registration</a><br>
+
+<a href="/">Go back</a>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create New Flight</title>
+
+    <style>
+        table, th, td{
+		border: 1px solid black;
+	}
+    </style>
+</head>
+<body>
+
+{% if data %}
+
+        <table>
+            <th>Flight Number</th>
+            <th>Flight Status</th>
+            <th>Departure Date</th>
+            <th>Arrival Date</th>
+            <th>Airline</th>
+            <th>Departure Airport</th>
+            <th>Arrival Airport</th>
+            <th>Price</th>
+            {% for flight in data %}
+                <tr>
+                    {% for data in flight %}
+                        <td> {{ data }} </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+
+    {% else %}
+        <p>There are no available flights</p>
+    {% endif %}
+
+<form action="/newFlight" method="post">
+    <input type="number" name="flight_number" placeholder="Flight number"/><br>
+    <input type="radio" id="flight_stat_del" name="flight_status" value="Delayed"/>
+    <label for="flight_stat_del">Delayed</label>
+    <input type="radio" id="flight_stat_ont" name="flight_status" value="On-time"/> <p>On-time</p><br>
+    <label for="flight_stat_ont">On-time</label>
+    <p>Departure date</p>
+    <input type="datetime-local" name="departure_date" placeholder="Departure date and time"/><br>
+    <p>Arrival date</p>
+    <input type="datetime-local" name="arrival_date" placeholder="Estimated arrival date and time"/><br>
+    <input type="text" name="airline" placeholder="Airline name"/><br>
+    <input type="text" name="airplane_id" placeholder="Airplane ID"/><br>
+    <input type="text" name="dept_code" placeholder="Departure Airport Code"/><br>
+    <input type="text" name="arriv_code" placeholder="Arrival Airport Code"/><br>
+    <input type="number" name="base_price" placeholder="Base Price"/><br>
+    <br>
+    <input type="submit" value="Create Flight"><br>
+
+    {% if error %}
+		<p class="error"><strong>Error:</strong> {{ error }}</p>
+	{% endif %}
+
+    {% if success %}
+		<p class="success">{{ success }}</p>
+	{% endif %}
+
+</form>
+
+<a href="/shome">Go back</a>
+
+
+</body>
+</html>

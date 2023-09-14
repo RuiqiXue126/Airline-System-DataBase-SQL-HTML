@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Public search</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+
+    </style>
+</head>
+<body>
+
+<h1>Search results for {{ field }}</h1>
+
+{% if data %}
+    <table style="text-align:left">
+        <th>Airline</th>
+        <th>Flight Number</th>
+        <th>Departure Date</th>
+        <th>Arrival Date</th>
+        {% for entry in data %}
+            <tr>
+                {% for elem in entry %}
+                    <td> {{ elem }} </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>No results</p>
+{% endif %}
+
+
+
+<a href="{{ url_for(prev) }}">Back</a>
+
+
+</body>
+</html>

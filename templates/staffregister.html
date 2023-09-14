@@ -1,0 +1,30 @@
+<html>
+<head>
+</head>
+<body>
+<h1>Staff Register</h1>
+<form action="/sregisterAuth" method="POST">
+	Username: <input type="text" name = "username" placeholder="username" required/> </br>
+	</br>
+	Password: <input type="password" name = "password" placeholder="password" required/></br>
+	</br>
+	Airline Name: <input type="text" name = "airline_name" placeholder="airline name" required/></br>
+	</br>
+	First Name: <input type="text" name = "fname" placeholder="first name" required/></br>
+	</br>
+	Last Name: <input type="text" name = "lname" placeholder="last name" required/></br>
+	</br>
+	Date of Birth: <input type="date" name = "dob" placeholder="YYYY-MM-DD" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"/></br>
+	</br>
+	Phone Number(s): <input type="text" name = "phone" placeholder="use ',' to separate your multiple phone numbers" required multiple/></br>
+	<input type="submit" value = Register />
+	{% if error %}
+		<p class="error"><strong>Error:</strong> {{error}}</p>
+	{% endif %}
+</form>
+
+<a href="{{ url_for('loginRedirect', acc_type='staff') }}">Staff login</a><br>
+
+<a href="/">Go back</a>
+</body>
+</html>

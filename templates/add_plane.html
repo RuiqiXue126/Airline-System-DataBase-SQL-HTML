@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Airplane</title>
+</head>
+<body>
+
+<form action="/addPlane" method="post">
+    <input type="text" name="airplane_id" placeholder="Airplane ID"/><br>
+    <input type="number" name="num_of_seats" placeholder="Number of seats"/><br>
+    <input type="text" name="manufacturer" placeholder="Manufacturer"/><br>
+    <input type="number" name="age" placeholder="Age"/><br>
+    Select an airline: <SELECT name="airline">
+    {% for i in airline_list %}
+	<OPTION value={{i['airline_name']}}>{{i['airline_name']}}</OPTION>
+    {% endfor %}
+</SELECT>
+    <br>
+    <input type="submit" value="Add Airplane"><br>
+
+    {% if error %}
+		<p class="error"><strong>Error:</strong> {{ error }}</p>
+	{% endif %}
+
+    {% if success %}
+		<p class="success">{{ success }}</p>
+	{% endif %}
+
+</form>
+
+<a href="/shome">Go back</a>
+
+
+</body>
+</html>

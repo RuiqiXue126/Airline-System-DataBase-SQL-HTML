@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Flight Ratings</title>
+</head>
+<body>
+
+<h3 style="float:left">View Ratings for Flights</h3><br>
+<br>
+<br>
+{% if ratings %}
+    <table style="text-align:left">
+
+        <th style>Flight Number</th>
+        <th>Average Rating</th>
+
+        {% for elem in ratings %}
+            <tr>
+                {% for data in elem %}
+                    <td> {{ data }} </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+
+
+    </table>
+
+{% else %}
+    <p>There is currently no data to display.</p>
+{% endif %}
+<br>
+<br>
+<form action="/viewRC" method="post">
+    <p>View all ratings and comments of a flight by searching:</p><br>
+    <input type="text" name="flight_number" placeholder="Enter a flight number"/><br>
+    <br>
+    <input type="submit" value="Search"><br>
+
+</form>
+
+<a href="/shome">Go back</a>
+
+</body>
+</html>

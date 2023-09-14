@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Landing Page</title>
+    <style>
+    table, th, td {
+        border: 1px solid black;
+    }
+
+    </style>
+</head>
+<body>
+
+<div>
+    <h1 style="float:left">Welcome, guest!</h1>
+    <p style="float:right; margin:0px">You are not logged in and may only view public data.</p><br>
+
+
+    <div style="float:right">
+        <a href="{{ url_for('loginRedirect', acc_type='customer') }}">Login here</a><br>
+        <a href="{{ url_for('registerRedirect', acc_type='customer') }}">Register here</a>
+    </div>
+
+
+</div>
+<br><br>
+
+
+
+{% if flights %}
+    <h2>Public flight information:</h2>
+    <table style="text-align:left">
+
+        <th style>Airline</th>
+        <th>Flight Number</th>
+        <th>Departure Date</th>
+        <th>Arrival Date</th>
+        <th>Flight Status</th>
+        <th>Departure Airport</th>
+        <th>Arrival Airport</th>
+        {% for elem in flights %}
+            <tr>
+                {% for data in elem %}
+                    <td> {{ data }} </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+
+
+    </table>
+
+    <form action="{{ url_for('psearch', type='source', prev='landing', sec='public') }}" method="post" style="margin-top:10px">
+        <input type="text" name="psearchf" placeholder="Search by source city or airport"
+               style="width:315px" required>
+        <input type="submit" value="Search"/>
+    </form>
+
+    <form action="{{ url_for('psearch', type='dest', prev='landing', sec='public') }}" method="post" style="margin-top:10px">
+        <input type="text" name="psearchf" placeholder="Search by destination city or airport"
+               style="width:315px" required>
+        <input type="submit" value="Search"/>
+    </form>
+
+
+    <form action="{{ url_for('psearch', type='dates', prev='landing', sec='public') }}" method="post" style="margin-top:10px">
+        Search by dates<br>
+        <label for="dept">By departure date:</label>
+        <input type="datetime-local" id="dept" name="psearchf" style="margin-top:10px" required><br>
+        <label for="arriv">By return date:</label>
+        <input type="datetime-local" id="arriv" name="ret_date" style="margin-top:10px" >
+        <input type="submit" value="Search">
+    </form>
+
+
+{% else %}
+    <p>There are currently no flights to display</p>
+{% endif %}
+
+
+
+
+
+</body>
+</html>

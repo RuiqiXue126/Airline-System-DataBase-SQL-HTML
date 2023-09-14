@@ -1,0 +1,213 @@
+<html>
+<head>
+    <style type="text/css">
+	table, th, td{
+		border: 1px solid black;
+	}
+</style>
+</head>
+<body>
+<div>
+    <h1>Welcome, {{ username }}</h1>
+
+    {% if spending %}
+        <table style="text-align:left; float:right">
+            <th>Purchase date</th>
+            <th>Ticket ID</th>
+            <th>Flight number</th>
+            <th>Cost</th>
+
+            {% for ticket in spending %}
+                <tr>
+                    {% for data in ticket %}
+                        <td>{{ data }}</td>
+
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+
+            <tr>
+                <td style="border: 0px"> Total spending:</td>
+                <td style="border: 0px"></td>
+                <td style="border: 0px"></td>
+                <td>{{ spending_total }}</td>
+            </tr>
+
+        </table>
+
+    {% else %}
+    {% endif %}
+</div>
+
+
+<div>
+    {% if public_flights %}
+        <p>Public flights:</p>
+        <br>
+        <table style="text-align:left">
+
+            <th style>Airline</th>
+            <th>Flight Number</th>
+            <th>Departure Date</th>
+            <th>Arrival Date</th>
+            <th>Flight Status</th>
+            <th>Departure Airport</th>
+            <th>Arrival Airport</th>
+            {% for elem in public_flights %}
+                <tr>
+                    {% for data in elem %}
+                        <td> {{ data }} </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+
+
+        </table>
+
+        <form action="{{ url_for('psearch', type='source', prev='chome', sec='user') }}" method="post" style="margin-top:10px">
+            <input type="text" name="psearchf" placeholder="Search by source city or airport"
+                   style="width:315px" required>
+            <input type="submit" value="Search"/>
+        </form>
+
+        <form action="{{ url_for('psearch', type='dest', prev='chome', sec='user') }}" method="post" style="margin-top:10px">
+            <input type="text" name="psearchf" placeholder="Search by destination city or airport"
+                   style="width:315px" required>
+            <input type="submit" value="Search"/>
+        </form>
+
+
+        <form action="{{ url_for('psearch', type='dates', prev='chome', sec='user') }}" method="post" style="margin-top:10px">
+            Search by dates<br>
+            <label for="dept2">By departure date:</label>
+            <input type="datetime-local" id="dept2" name="psearchf" style="margin-top:10px" required><br>
+            <label for="arriv2">By return date:</label>
+            <input type="datetime-local" id="arriv2" name="ret_date" style="margin-top:10px" >
+            <input type="submit" value="Search">
+        </form>
+    {% else %}
+        <p>There are currently no public flights to display</p>
+    {% endif %}
+
+    {% if future_flights %}
+        <form action="/cancel_flight" method="post">
+            <p>Your upcoming flights:</p>
+            <table style="text-align:left">
+
+                <th>Ticket ID</th>
+                <th>Flight Number</th>
+                <th>Flight Status</th>
+                <th>Departure Airport</th>
+                <th>Departure Date</th>
+                <th>Arrival Airport</th>
+                <th>Arrival Date</th>
+                <th>Airline</th>
+                <th>Travel Class</th>
+                <th>Cost</th>
+                    {% for elem in future_flights %}
+                        <tr>
+                            {% for data in elem %}
+                                <td> {{ data }} </td>
+                            {% endfor %}
+
+                            {% if elem[2] == 'Complete' %}
+                                <td><a href="{{ url_for('ratings', flight_number=elem[1]) }}">Rate</a></td>
+                            {% else %}
+                                <td><input type="radio" name="selected_ticket" value="{{ elem[0] }} " required></td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+
+            </table>
+            <input type="submit" value="Cancel selected flight" style="margin-top:10px">
+
+        </form>
+
+        <form action="{{ url_for('psearch', type='source', prev='chome', sec='public') }}" method="post" style="margin-top:10px">
+            <input type="text" name="psearchf" placeholder="Search by source city or airport"
+                   style="width:315px" required>
+            <input type="submit" value="Search"/>
+        </form>
+
+        <form action="{{ url_for('psearch', type='dest', prev='chome', sec='public') }}" method="post" style="margin-top:10px">
+            <input type="text" name="psearchf" placeholder="Search by destination city or airport"
+                   style="width:315px" required>
+            <input type="submit" value="Search"/>
+        </form>
+
+
+        <form action="{{ url_for('psearch', type='dates', prev='chome', sec='public') }}" method="post" style="margin-top:10px">
+            Search by dates<br>
+            <label for="dept">By departure date:</label>
+            <input type="datetime-local" id="dept" name="psearchf" style="margin-top:10px" required><br>
+            <label for="arriv">By return date:</label>
+            <input type="datetime-local" id="arriv" name="ret_date" style="margin-top:10px" >
+            <input type="submit" value="Search">
+        </form>
+
+    {% else %}
+        <p>You have no upcoming flights.</p>
+    {% endif %}
+
+
+
+
+
+
+    {% if cust_flights %}
+        <form action="/cancel_flight" method="post">
+            <p>Your flights:</p>
+            <table style="text-align:left">
+
+                <th>Ticket ID</th>
+                <th>Flight Number</th>
+                <th>Flight Status</th>
+                <th>Departure Airport</th>
+                <th>Departure Date</th>
+                <th>Arrival Airport</th>
+                <th>Arrival Date</th>
+                <th>Airline</th>
+                <th>Travel Class</th>
+                <th>Cost</th>
+                    {% for elem in cust_flights %}
+                        <tr>
+                            {% for data in elem %}
+                                <td> {{ data }} </td>
+                            {% endfor %}
+
+                            {% if elem[2] == 'Complete' %}
+                                <td><a href="{{ url_for('ratings', flight_number=elem[1]) }}">Rate</a></td>
+                            {% else %}
+                                <td><input type="radio" name="selected_ticket" value="{{ elem[0] }} " required></td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+
+            </table>
+            <input type="submit" value="Cancel selected flight" style="margin-top:10px">
+
+        </form>
+
+    {% else %}
+        <p>You have no flights.</p>
+    {% endif %}
+
+    {% if fail_cancel %}
+        <p class="error"><strong>{{ fail_cancel }}</strong></p>
+    {% else %}
+        {% if cancel_success %}
+            <p style="color:green">{{ cancel_success }}</p>
+        {% else %}
+        {% endif %}
+    {% endif %}
+
+</div>
+
+<a href="{{ url_for('buy_ticket_redirect', step='listings') }}">Book a flight</a><br>
+
+<a href="/logout">Logout</a>
+
+</body>
+
+
+</html>

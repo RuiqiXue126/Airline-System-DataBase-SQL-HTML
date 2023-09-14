@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Report</title>
+</head>
+<body>
+
+<h3 style="float:left">View Number of Tickets Sold Based On</h3><br>
+<br>
+<form action="/viewReport" method="post">
+    <input type="radio" name="last" value="last_month"/> <p>Last Month</p>
+    <input type="radio" name="last" value="last_year"/> <p>Last Year</p><br>
+    <input type="radio" name="last" value="between"/> <p>Select Time Period Below</p><br>
+    <p>Time Period Between </p>
+    <input type="date" name="date1" placeholder="Start Date"/><br>
+    <p>And </p>
+    <input type="date" name="date2" placeholder="End Date"/><br>
+    <br>
+    <input type="submit" value="View Report"><br>
+
+</form>
+
+<a href="/shome">Go back</a>
+
+
+</body>
+</html>

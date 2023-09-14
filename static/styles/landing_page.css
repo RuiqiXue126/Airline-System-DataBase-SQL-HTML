@@ -1,0 +1,9 @@
+.headline h1, .headline p {
+    display: inline;
+    vertical-align: top;
+    line-height: 28px;
+}
+.headline h1 {
+    font-weight: bold;
+
+}

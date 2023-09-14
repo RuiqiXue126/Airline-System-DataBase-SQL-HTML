@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ticket Report</title>
+</head>
+<body>
+<h3 style="float:left">Here is your report!</h3><br>
+<br>
+<p>Number of tickets sold based on the time period you chose:</p>
+
+{% if number %}
+    <p>{{ number }}</p>
+{% endif %}
+
+{% if not number %}
+    <p> 0 </p>
+{% endif %}
+<br>
+<h2 style="float:left">Month-wise Tickets Sold</h2><br>
+<br>
+<br>
+{% if months %}
+    <table style="text-align:left">
+        <tr>
+        <th style>Month</th>
+        <th>Number of Tickets Sold</th>
+        </tr>
+        {% for i in range(months| length) %}
+            <tr>
+                <td>{{ months[i] }}</td>
+                <td>{{ nums[i]['num'] }}</td>
+            </tr>
+        {% endfor %}
+
+
+    </table>
+
+{% else %}
+    <p>There are currently no tickets sold to display</p>
+{% endif %}
+<br>
+
+<a href="/shome">Go back</a>
+</body>
+</html>

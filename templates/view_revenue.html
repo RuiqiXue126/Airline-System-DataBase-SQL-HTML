@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Earned Revenue</title>
+</head>
+<body>
+
+
+{% if mdata %}
+    <h3 style="float:left">Revenue earned in the last MONTH is:</h3><br>
+    <br>{{ mdata['total_revenue_m'] }}<br>
+
+{% else %}
+    <p>There is currently no revenue earned in the last month.</p>
+{% endif %}
+<br>
+
+{% if ydata %}
+    <h3 style="float:left">Revenue earned in the last YEAR is:</h3><br>
+    <br>{{ ydata['total_revenue_y'] }}<br>
+
+{% else %}
+    <p>There is currently no revenue earned in the last year.</p>
+{% endif %}<br>
+<br>
+
+<a href="/view_revenue_class">View Earned Revenue By Class</a><br>
+<br>
+<a href="/shome">Go back to Airstaff Homepage</a>
+
+
+
+</body>
+</html>

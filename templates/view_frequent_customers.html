@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Frequent Customers</title>
+</head>
+<body>
+<h3 style="float:left">Frequent customer within the last year is:</h3><br>
+{% if fc %}
+    <p>{{ fc }}</p>
+{% else %}
+    <p>There is currently no data to display.</p>
+{% endif %}
+<br>
+<form action="/view_fc_list" method="post">
+    <p>View all flights taken by a customer within your airline through searching:</p><br>
+    <input type="text" name="customer" placeholder="Enter a customer's email"/><br>
+    <br>
+    <input type="submit" value="Search"><br>
+
+</form>
+<a href="/shome">Go back to Staff's Homepage</a>
+</body>
+</html>

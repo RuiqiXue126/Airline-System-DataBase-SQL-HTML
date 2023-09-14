@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ticket Booking Form</title>
+
+    <script>
+        var cost = {{ price }}
+        function changeClass(selection) {
+            if (selection.id === "first") {
+                value = 3;
+            }
+            else if (selection.id === "business") {
+                value = 2;
+            }
+            else {
+                value = 1;
+            }
+            new_cost = cost * value;
+            document.getElementById("price_header").textContent = '$' + (new_cost);
+            document.getElementById("fincost").value = new_cost;
+        }
+
+    </script>
+
+</head>
+<body>
+<div>
+    <h1 id="header">Flight {{ flight_number }}, {{ departure }} &rArr; {{ arrival }}</h1>
+    <h1 id="price_header">${{ price }}</h1>
+</div>
+
+
+<form action="{{ url_for('buy_ticket', flight_number=flight_number) }}" method="post">
+    <input type="radio" id="first" name="class" value="First Class" onclick="changeClass(this);" required/>
+    <label for="first">First Class</label><br>
+    <input type="radio" id="business" name="class" value="Business Class" onclick="changeClass(this);" required/>
+    <label for="business">Business Class</label><br>
+    <input type="radio" id="economy" name="class" value="Economy Class" onclick="changeClass(this);" required checked="checked"/>
+    <label for="economy">Economy Class</label><br>
+
+    <input type="hidden" name="final_cost" id="fincost" value="{{ price }}">
+    <br>
+
+    <input type="text" name="cc" placeholder="Card number(not stored)" required/>
+    <select name="card_type" id="cards" required>
+        <option value="Debit">Debit</option>
+        <option value="Credit">Credit</option>
+    </select><br>
+    <input type="text" name="name_card" placeholder="Name on card" required/><br>
+
+    Expiry date: <input type="date" name="expiry" required/><br>
+
+
+    <input type="submit" value="Book"/>
+</form>
+
+
+</body>
+</html>

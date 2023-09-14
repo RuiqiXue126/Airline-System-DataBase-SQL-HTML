@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Airplanes Confirmation</title>
+</head>
+<body>
+
+<h2 style="float:left">View Airplanes Owned by Your Airline</h2><br>
+<br>
+<br>
+{% if airplanes %}
+    <table style="text-align:left">
+
+        <th style>Airplane ID</th>
+        <th>Number of Seats</th>
+        <th>Manufacturer</th>
+        <th>Age</th>
+        <th>Airline</th>
+        {% for elem in airplanes %}
+            <tr>
+                {% for data in elem %}
+                    <td> {{ data }} </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+
+
+    </table>
+
+{% else %}
+    <p>There is currently no airplane to display.</p>
+{% endif %}
+<br>
+
+<a href="/shome">Go back to Airstaff Homepage</a>
+
+</body>
+</html>

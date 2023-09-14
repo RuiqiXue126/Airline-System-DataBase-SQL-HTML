@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View List of Flight that the Customer Has Taken</title>
+</head>
+<body>
+<p>All flights taken by this customer within your airline are:</p><br>
+{% if fcl %}
+    <table style="text-align:left">
+        <tr>
+        <th style>Flight Number</th>
+        </tr>
+        {% for i in range(fcl| length) %}
+            <tr>
+                <td>{{ fcl[i] }}</td>
+
+            </tr>
+        {% endfor %}
+
+
+    </table>
+
+{% else %}
+    <p>There are currently no data to display</p>
+{% endif %}
+<br>
+
+<a href="/shome">Go back</a>
+
+
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        table, th, td{
+		border: 1px solid black;
+	}
+    </style>
+    <meta charset="UTF-8">
+    <title>Flight Listings</title>
+</head>
+<body>
+
+<h1>Available flights</h1>
+
+<div>
+    {% if data %}
+        <form action="/buy_ticket" method="post">
+            <table>
+                <th>Flight Number</th>
+                <th>Flight Status</th>
+                <th>Departure Date</th>
+                <th>Arrival Date</th>
+                <th>Airline</th>
+                <th>Departure Airport</th>
+                <th>Arrival Airport</th>
+                <th>Price</th>
+                {% for flight in data %}
+                    <tr>
+                        {% for data in flight %}
+                            <td> {{ data }} </td>
+                        {% endfor %}
+
+                        <td><a href="{{ url_for('buy_ticket_redirect', step='next', flight_info=flight) }}">Book</a></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </form>
+    {% else %}
+        <p>There are no available flights</p>
+    {% endif %}
+</div>
+
+<a href="/chome">Return</a>
+
+</body>
+</html>

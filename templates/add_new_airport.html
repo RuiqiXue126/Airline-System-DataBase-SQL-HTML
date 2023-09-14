@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Airport</title>
+</head>
+<body>
+<h3 style="float:left">Add New Airport</h3><br>
+<br>
+<br>
+<div>
+    <form action="/addAirport" method="post">
+        <input type="text" name="airport_code" placeholder="Airport Code"/><br>
+        <input type="text" name="airport_name" placeholder="Airport Name"/><br>
+        <input type="text" name="country" placeholder="Country"/><br>
+        <input type="text" name="city" placeholder="City"/><br>
+        <br>
+        Select a type:
+        <select name="type">
+            <option value="Domestic">Domestic</option>
+            <option value="International">International</option>
+            <option value="Both">Both</option>
+        </select>
+        <br>
+        <input type="submit" value="Add Airport"><br>
+
+    {% if error %}
+		<p class="error"><strong>Error:</strong> {{ error }}</p>
+	{% endif %}
+
+    {% if success %}
+		<p class="success">{{ success }}</p>
+	{% endif %}
+
+    </form>
+</div>
+
+<a href="/shome">Go back</a>
+
+
+</body>
+</html>
+
+
+
+

@@ -1,0 +1,22 @@
+<html>
+<head>
+</head>
+<body>
+<form action="/cloginAuth" method="POST">
+	<input type="email" name = "email" placeholder="Email" required/> <br>
+	<input type="password" name = "cpassword" placeholder="Password" required/><br>
+	<input type="submit" value ="Login" />
+	{% if error %}
+		<p class="error"><strong>Error:</strong> {{error}}</p>
+	{% endif %}
+</form>
+
+<a href="{{ url_for('registerRedirect', acc_type='customer') }}">Register</a><br>
+<a href="{{ url_for('loginRedirect', acc_type='staff') }}">Staff login</a><br>
+
+<a href="/">Go back</a>
+
+</body>
+
+
+</html>

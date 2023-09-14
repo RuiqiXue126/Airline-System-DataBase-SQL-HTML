@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Earned Revenue By Class</title>
+</head>
+<body>
+<h3 style="float:left">Revenue earned in the last MONTH is</h3><br>
+<br>
+
+    By First Class: {{ mdata1['total_revenue_m'] }}<br>
+
+<br>
+
+    By Business Class: {{ mdata2['total_revenue_m'] }}<br>
+<br>
+
+    By Economy Class: {{ mdata3['total_revenue_m'] }}<br>
+
+
+<br>
+<h3 style="float:left">Revenue earned in the last YEAR is</h3><br>
+<br>
+
+    By First Class: {{ ydata1['total_revenue_y'] }}<br>
+
+<br>
+
+    By Business Class: {{ ydata2['total_revenue_y'] }}<br>
+
+<br>
+
+    By Economy Class: {{ ydata3['total_revenue_y'] }}<br>
+
+<br>
+<a href="/shome">Go back to Airstaff Homepage</a>
+
+</body>
+</html>

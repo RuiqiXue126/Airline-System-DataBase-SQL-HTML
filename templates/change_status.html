@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Change Flight Status</title>
+</head>
+<body>
+
+<form action="/changeStatus" method="post">
+    <input type="number" name="flight_number" placeholder="Flight number"/><br>
+    <p>Change This Flight's Status into </p>
+    <input type="radio" name="flight_status" value="Delayed"/> <p>Delayed</p>
+    <input type="radio" name="flight_status" value="On-time"/> <p>On-time</p><br>
+    <br>
+    <input type="submit" value="Change Status"><br>
+
+    {% if error %}
+		<p class="error"><strong>Error:</strong> {{ error }}</p>
+	{% endif %}
+
+    {% if success %}
+		<p class="success">{{ success }}</p>
+	{% endif %}
+
+
+</form>
+
+<a href="/shome">Go back</a>
+
+
+</body>
+</html>

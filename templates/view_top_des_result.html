@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Top 3 Destinations</title>
+</head>
+<body>
+<h3 style="float:left">Top 3 Destinations Are</h3><br>
+<br>
+{% if data %}
+    <table style="text-align:left">
+        <th>City</th>
+        <th style>Airport</th>
+        <th>Number of tickets sold</th>
+        {% for elem in data %}
+            <tr>
+                {% for each in elem %}
+                    <td> {{ each }} </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+
+
+    </table>
+
+{% else %}
+    <p>There is currently no destination to display</p>
+{% endif %}<br>
+<br>
+
+<a href="/shome">Go back to Airstaff Homepage</a>
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Rating by Flight</title>
+</head>
+<body>
+<h3 style="float:left">View Ratings for Flights</h3><br>
+<br>
+<br>
+{% if ratingcomment %}
+    <table style="text-align:left">
+
+        <th style>Flight Number</th>
+        <th>Rating</th>
+        <th>Comment</th>
+        <th>Customer</th>
+        {% for elem in ratingcomment %}
+            <tr>
+                {% for data in elem %}
+                    <td> {{ data }} </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+
+
+    </table>
+
+{% else %}
+    <p>There is currently no data to display.</p>
+{% endif %}
+<br>
+<a href="/shome">Go back to Staff's Homepage</a>
+</body>
+</html>
